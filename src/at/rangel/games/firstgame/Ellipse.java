@@ -2,28 +2,30 @@ package at.rangel.games.firstgame;
 
 import org.newdawn.slick.Graphics;
 
-public class Rectangle implements Actor {
-    private enum DIRECTION {RIGHT, DOWN, LEFT, UP}
-
-    private float x;
-    private float y;
+public class Ellipse implements Actor {
+    private float x, y;
     private float speed;
 
-    public Rectangle(int x, int y, float speed) {
+    public Ellipse(float x, float y) {
         this.x = x;
         this.y = y;
-        this.speed = speed;
+        this.speed = 5;
     }
 
+    @Override
     public void render(Graphics graphics) {
-        graphics.drawRect(this.x, this.y, 20, 20);
+        graphics.drawOval(this.x, this.y, 20, 10);
     }
 
+    @Override
     public void update(int delta) {
+        this.y += (float) delta / this.speed;
         this.x += (float) delta / this.speed;
+        if (this.y > 600) {
+            this.y = 0;
+        }
         if (this.x > 800) {
             this.x = 0;
         }
     }
-
 }
