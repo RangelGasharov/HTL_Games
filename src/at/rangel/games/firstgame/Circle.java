@@ -7,7 +7,7 @@ import java.util.Random;
 public class Circle implements Actor {
     private float x, y;
     private float speed;
-    private int diameter;
+    private float diameter;
 
     public Circle() {
         Random random = new Random();
@@ -23,7 +23,12 @@ public class Circle implements Actor {
 
     public void update(int delta) {
         this.y += (float) delta / this.speed;
+        this.diameter += 0.005;
         if (this.y > 600) {
+            this.y = 0;
+        }
+
+        if (this.y < 0) {
             this.y = 0;
         }
     }

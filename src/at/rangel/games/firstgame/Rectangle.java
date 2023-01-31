@@ -3,16 +3,18 @@ package at.rangel.games.firstgame;
 import org.newdawn.slick.Graphics;
 
 public class Rectangle implements Actor {
-    private enum DIRECTION {RIGHT, DOWN, LEFT, UP}
+    public enum DIRECTION {RIGHT, DOWN, LEFT, UP}
 
     private float x;
     private float y;
     private float speed;
+    private DIRECTION direction;
 
-    public Rectangle(int x, int y, float speed) {
+    public Rectangle(int x, int y, float speed, DIRECTION direction) {
         this.x = x;
         this.y = y;
         this.speed = speed;
+        this.direction = direction;
     }
 
     public void render(Graphics graphics) {
@@ -20,9 +22,16 @@ public class Rectangle implements Actor {
     }
 
     public void update(int delta) {
-        this.x += (float) delta / this.speed;
+        if (this.direction.equals(DIRECTION.LEFT)) {
+            this.x -= (float) delta / this.speed;
+        } else {
+            this.x += (float) delta / this.speed;
+        }
         if (this.x > 800) {
             this.x = 0;
+        }
+        if (this.x < 0) {
+            this.x = 800;
         }
     }
 
