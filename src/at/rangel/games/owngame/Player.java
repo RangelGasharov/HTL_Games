@@ -7,7 +7,7 @@ public class Player implements Actor {
     private float x, y;
     private int playerWidth = 43;
     private int playerHeight = 33;
-    private double overallSpeed = 1;
+    private double overallSpeed = 0.5;
 
     public Player() throws SlickException {
         Image tmp = new Image("src/at/rangel/games/owngame/assets/player-sprite.png");

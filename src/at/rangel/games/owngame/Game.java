@@ -22,6 +22,11 @@ public class Game extends BasicGame {
         Player player = new Player();
         this.player = player;
         this.actors.add(player);
+
+        for (int i = 0; i < 10; i++) {
+            Enemy enemy = new Enemy();
+            this.actors.add(enemy);
+        }
     }
 
     @Override
@@ -49,7 +54,7 @@ public class Game extends BasicGame {
     public static void main(String[] args) {
         try {
             AppGameContainer container = new AppGameContainer(new Game("Rectangles"));
-            container.setDisplayMode(2550, 1440, false);
+            container.setDisplayMode(1600, 900, false);
             container.start();
         } catch (SlickException e) {
             e.printStackTrace();

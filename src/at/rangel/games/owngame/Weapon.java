@@ -17,6 +17,7 @@ public class Weapon implements Actor {
     public void render(Graphics graphics) {
         graphics.setColor(Color.red);
         graphics.fillOval(this.x, this.y, 10, 10);
+        graphics.setColor(Color.white);
     }
 
     @Override
