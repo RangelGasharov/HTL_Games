@@ -7,11 +7,14 @@ public class SineComponent implements Actor {
     public float x, y;
     public double amplitude;
     public double displacementX, displacementY;
+    public double positionRelative, amountOfDurations;
 
     public SineComponent() {
         this.x = x;
         this.y = y;
+        this.positionRelative = positionRelative;
         this.amplitude = 100;
+        this.amountOfDurations = 10;
         this.displacementX = displacementX;
         this.displacementY = displacementY;
     }

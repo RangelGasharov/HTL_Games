@@ -27,31 +27,29 @@ public class SineFunction extends BasicGameState {
         Axes xAxes = new Axes(0, (float) containerHeight / 2, (float) containerWidth, 2);
         this.actors.add(xAxes);
 
-        Axes yAxes = new Axes((float) containerWidth / 2, 0, 2, (float) containerHeight);
+        Axes yAxes = new Axes((float) 0, 0, 2, (float) containerHeight);
         this.actors.add(yAxes);
 
-        int amountOfComponents = 1000;
+        int amountOfComponents = 5000;
         for (int i = 1; i <= amountOfComponents; i++) {
             SineComponent sineComponent = new SineComponent();
             this.actors.add(sineComponent);
             this.sineComponents.add(sineComponent);
 
             double positionRelative = (double) i / amountOfComponents;
+            sineComponent.positionRelative = positionRelative;
             sineComponent.x = (float) (positionRelative * containerWidth);
 
-            double amountOfPeriodDurations = 3;
-            double factor = -1;
-            if (amountOfPeriodDurations % 2 != 0) {
-                factor = 1;
-            }
-            double angleOfComponent = positionRelative * 360 * Math.PI / (180) * amountOfPeriodDurations;
-            System.out.println(angleOfComponent);
-            sineComponent.y = (float) (factor * sineComponent.amplitude * Math.sin(angleOfComponent) + containerHeight / 2);
+            double angleOfComponent = positionRelative * 360 * Math.PI / (180) * sineComponent.amountOfDurations;
+            sineComponent.y = (float) (-sineComponent.amplitude * Math.sin(angleOfComponent) + containerHeight / 2);
         }
     }
 
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
         graphics.drawString("Sine Function", 100, 100);
+        graphics.drawString("Displacement x Axes: " + this.sineComponents.get(0).displacementX, 400, 100);
+        graphics.drawString("Displacement y Axes: " + this.sineComponents.get(0).displacementY, 700, 100);
+        graphics.drawString("Displacement amplitude: " + this.sineComponents.get(0).amplitude / 100, 1000, 100);
         for (Actor actor : this.actors) {
             actor.render(graphics);
         }
@@ -63,6 +61,10 @@ public class SineFunction extends BasicGameState {
     }
 
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
+        for (SineComponent sineComponent : sineComponents) {
+            double angleOfComponent = sineComponent.positionRelative * 360 * Math.PI / (180) * sineComponent.amountOfDurations;
+            sineComponent.y = (float) (-sineComponent.amplitude * Math.sin(angleOfComponent) + gameContainer.getHeight() / 2 - sineComponent.displacementY);
+        }
         if (gameContainer.getInput().isKeyPressed(Input.KEY_1)) {
             stateBasedGame.enterState(1);
         }
@@ -80,26 +82,29 @@ public class SineFunction extends BasicGameState {
             amplitudeIsChanging = false;
         }
 
-        if (gameContainer.getInput().isKeyPressed(Input.KEY_LEFT)) {
+        if (gameContainer.getInput().isKeyDown(Input.KEY_LEFT)) {
             for (SineComponent sineComponent : sineComponents) {
                 if (xAxeIsChanging) {
                     sineComponent.x -= 1;
+                    sineComponent.displacementX -= 1;
+
                 }
             }
         }
 
-        if (gameContainer.getInput().isKeyPressed(Input.KEY_RIGHT)) {
+        if (gameContainer.getInput().isKeyDown(Input.KEY_RIGHT)) {
             for (SineComponent sineComponent : sineComponents) {
                 if (xAxeIsChanging) {
                     sineComponent.x += 1;
+                    sineComponent.displacementX += 1;
                 }
             }
         }
 
-        if (gameContainer.getInput().isKeyPressed(Input.KEY_UP)) {
+        if (gameContainer.getInput().isKeyDown(Input.KEY_UP)) {
             for (SineComponent sineComponent : sineComponents) {
                 if (yAxeIsChanging) {
-                    sineComponent.y -= 1;
+                    sineComponent.displacementY += 1;
                 }
                 if (amplitudeIsChanging) {
                     sineComponent.amplitude += 1;
@@ -107,14 +112,13 @@ public class SineFunction extends BasicGameState {
             }
         }
 
-        if (gameContainer.getInput().isKeyPressed(Input.KEY_DOWN)) {
+        if (gameContainer.getInput().isKeyDown(Input.KEY_DOWN)) {
             for (SineComponent sineComponent : sineComponents) {
                 if (yAxeIsChanging) {
-                    sineComponent.y += 1;
+                    sineComponent.displacementY -= 1;
                 }
                 if (amplitudeIsChanging) {
                     sineComponent.amplitude -= 1;
-                    System.out.println(sineComponent.amplitude);
                 }
             }
         }
